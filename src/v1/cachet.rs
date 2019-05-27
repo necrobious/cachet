@@ -46,7 +46,7 @@ named_args!(pub cachet(root_keys:Box<RootKeysStore>)<Cachet>, do_parse!(
     (Cachet { signature:sig, trust_chain: chain, data: data.to_vec() })
 ));
 
-#[derive(Clone,Debug,PartialEq)]
+#[derive(Copy,Clone,Debug,PartialEq)]
 pub enum CachetError {
     SigningFailed
 }
