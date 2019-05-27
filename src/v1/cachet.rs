@@ -75,6 +75,18 @@ impl Cachet {
 
     }
 
+    pub fn data(&self) -> Vec<u8> {
+        self.data.clone()
+    }
+
+    pub fn signature(&self) -> Signature {
+        self.signature
+    }
+
+    pub fn trust_chain(&self) -> TrustChain {
+        self.trust_chain
+    }
+
     pub fn as_bytes (&self) -> Vec<u8> {
         let mut header:Vec<u8> = [0x43,0x54,0x00,0x01].to_vec();
         let mut chain_bytes = self.trust_chain.clone().as_bytes();
