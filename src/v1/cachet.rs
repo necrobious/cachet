@@ -52,8 +52,8 @@ pub enum CachetError {
 }
 
 impl Cachet {
-    pub fn new(data: Vec<u8>, chain:TrustChain, skey:SecretKey) -> Result<Cachet,CachetError> {
-        let mut chain_bytes = chain.clone().as_bytes();
+    pub fn new(data: Vec<u8>, chain:&TrustChain, skey:&SecretKey) -> Result<Cachet,CachetError> {
+        let mut chain_bytes = chain.as_bytes();
         let mut data_bytes = data.clone();
 
         let mut signed_bytes:Vec<u8> = Vec::with_capacity(
@@ -65,11 +65,11 @@ impl Cachet {
         signed_bytes.write_u32::<BigEndian>(data.len() as u32).unwrap();
         signed_bytes.append(&mut data_bytes);
 
-        let sig = ed25519::sign_detached(&signed_bytes, &skey);
+        let sig = ed25519::sign_detached(&signed_bytes, skey);
 
         Ok(Cachet {
             signature: sig,
-            trust_chain: chain,
+            trust_chain: *chain,
             data: data,
         })
 
@@ -119,7 +119,7 @@ fn cachet_should_construct () {
     let (root_skey, root_pkey, end_skey, end_pkey, root_key_store, chain) = fixture();
 
     let test_data = b"test data".to_vec();
-    let cachet_res = Cachet::new(test_data, chain, end_skey);
+    let cachet_res = Cachet::new(test_data, &chain, &end_skey);
 
     assert!(cachet_res.is_ok());
 
@@ -141,7 +141,7 @@ fn cachet_should_fail_to_parse_with_bad_tag  () {
     let (root_skey, root_pkey, end_skey, end_pkey, root_key_store, chain) = fixture();
 
     let test_data = b"test data".to_vec();
-    let cachet_res = Cachet::new(test_data, chain, end_skey);
+    let cachet_res = Cachet::new(test_data, &chain, &end_skey);
 
     assert!(cachet_res.is_ok());
 
@@ -161,7 +161,7 @@ fn cachet_should_fail_to_parse_with_bad_trustchain  () {
     let (root_skey, root_pkey, end_skey, end_pkey, root_key_store, chain) = fixture();
 
     let test_data = b"test data".to_vec();
-    let cachet_res = Cachet::new(test_data, chain, end_skey);
+    let cachet_res = Cachet::new(test_data, &chain, &end_skey);
 
     assert!(cachet_res.is_ok());
 
@@ -181,7 +181,7 @@ fn cachet_should_fail_to_parse_with_untrusted_signature () {
     let (root_skey, root_pkey, end_skey, end_pkey, root_key_store, chain) = fixture();
 
     let test_data = b"test data".to_vec();
-    let cachet_res = Cachet::new(test_data, chain, end_skey);
+    let cachet_res = Cachet::new(test_data, &chain, &end_skey);
 
     assert!(cachet_res.is_ok());
 
