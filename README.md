@@ -21,10 +21,10 @@ Do NOT expect different versions to use the same algorithms and/or configuration
 Serializers should only use the latest format versions.
 Deserializers must handle more than one format version.  
 
-No format versions is required to be implemented.
+No format versions are required to be implemented.
 
 
-The cachet contains:
+The V1 cachet contains (TODO: move this into src/v1.md):
  - Cachet format version
  - signature of bytes (Ed25519, 32 bytes, verify with last public key in the trust chain that follows)
  - Trust chain for the signautre ( vari, see TC format)
