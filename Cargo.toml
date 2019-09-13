@@ -8,5 +8,5 @@ edition = "2018"
 sodiumoxide = "0.2"
 nom = "4.2"
 byteorder = "1"
-trustchain = { git = "https://github.com/necrobious/trust-chain", rev = "b272fc0"  }
+trustchain = { git = "https://github.com/necrobious/trust-chain", rev = "3641974"  }
 
